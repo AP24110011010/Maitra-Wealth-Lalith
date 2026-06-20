@@ -1,0 +1,48 @@
+[
+  {
+    "symbol": "RELIANCE",
+    "name": "Reliance Industries Limited",
+    "sector": "Energy",
+    "industry": "Oil & Gas",
+    "about": "Reliance Industries is a conglomerate with interests in energy, petrochemicals, textiles, natural resources, retail and telecommunications.",
+    "currentPrice": 2500.25,
+    "open": 2485.00,
+    "previousClose": 2470.10,
+    "dayHigh": 2520.55,
+    "dayLow": 2475.30,
+    "week52High": 3200.00,
+    "week52Low": 2100.00,
+    "volume": 1234567,
+    "marketCap": 180000000000,
+    "pe": 35.2,
+    "eps": 71.2,
+    "roe": 18.5,
+    "roce": 20.1,
+    "dividendYield": 0.45,
+    "bookValue": 1200.50,
+    "debtToEquity": 0.15,
+    "historicalPrices": [
+      {"date": "2024-01-01", "close": 2480.00},
+      {"date": "2024-01-02", "close": 2485.50},
+      {"date": "2024-01-03", "close": 2490.10},
+      {"date": "2024-01-04", "close": 2505.00},
+      {"date": "2024-01-05", "close": 2510.75}
+    ],
+    "financials": {
+      "revenue": 80000000000,
+      "netProfit": 12000000000,
+      "ebitda": 15000000000,
+      "epsHistory": [
+        {"year": 2023, "eps": 71.2},
+        {"year": 2022, "eps": 68.5},
+        {"year": 2021, "eps": 65.0}
+      ]
+    },
+    "shareholding": {
+      "promoters": 30.0,
+      "fii": 45.0,
+      "dii": 15.0,
+      "public": 10.0
+    }
+  }
+]
