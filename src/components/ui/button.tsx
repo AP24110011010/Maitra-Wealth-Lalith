@@ -10,21 +10,21 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:-translate-y-0.5",
+          "bg-[#FF6B00] text-white hover:bg-[#E66000] shadow-[0_4px_14px_rgba(255,107,0,0.25)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.35)]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:-translate-y-0.5",
+          "bg-[#EF4444] text-white hover:bg-[#DC2626] shadow-sm",
         outline:
-          "border border-white/10 bg-white/5 shadow-sm hover:bg-white/10 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:-translate-y-0.5",
+          "border border-white/10 bg-white/5 hover:bg-white/10 text-white shadow-sm backdrop-blur-md",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:-translate-y-0.5",
-        ghost: "hover:bg-white/10 hover:text-white",
-        link: "text-primary underline-offset-4 hover:underline hover:text-white transition-colors",
+          "bg-[#1F3BB3] text-white hover:bg-[#1A3299] shadow-sm",
+        ghost: "hover:bg-white/10 text-slate-300 hover:text-white",
+        link: "text-[#22D3EE] underline-offset-4 hover:underline hover:text-white transition-colors",
       },
       size: {
-        default: "h-10 px-5 py-2",
-        sm: "h-9 rounded-full px-4 text-xs",
-        lg: "h-12 rounded-full px-8 text-base",
-        icon: "h-10 w-10",
+        default: "h-11 px-6 py-2 text-[15px] font-[600]",
+        sm: "h-9 px-4 text-sm font-[500]",
+        lg: "h-14 px-8 text-[16px] font-[600]",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {

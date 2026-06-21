@@ -9,8 +9,10 @@ import { fadeIn } from "@/lib/animations";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { 
   Search, Play, Apple, QrCode, UserPlus, 
-  LineChart, ArrowRight, ShieldCheck, Zap, Globe, Shield, Award, Users
+  LineChart, ArrowRight, ShieldCheck, Zap, Globe, Shield, Award, Users, Smartphone
 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 const mockChartData = [
   { time: '09:15', price: 2890 },
@@ -24,74 +26,138 @@ const mockChartData = [
 ];
 
 export function HeroSection() {
-  return (
-    <AnimatedSection className="relative w-full min-h-[calc(100vh-76px)] flex items-start pt-8 pb-12 overflow-hidden bg-[#050B18]">
-      {/* Abstract Financial Geometry Background */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-transparent opacity-60 blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#14E6C9]/10 via-background to-transparent opacity-40 blur-3xl pointer-events-none"></div>
-      
-      {/* Grid Pattern with Vignette */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)] pointer-events-none"></div>
+  const words = [
+    { text: "STOCKS", color: "#2563EB" },
+    { text: "COMMODITIES", color: "#14B8A6" },
+    { text: "MUTUAL FUNDS", color: "#FF6B00" },
+    { text: "FUTURES", color: "#4F46E5" },
+    { text: "OPTIONS", color: "#F59E0B" },
+    { text: "IPO", color: "#EC4899" },
+  ];
+  
+  const [wordIndex, setWordIndex] = useState(0);
 
-      <div className="container relative z-10 mx-auto px-4 lg:px-8 max-w-[1440px]">
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % words.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return ( <AnimatedSection className="relative w-full min-h-[calc(100vh-62px)] flex items-center pt-0 pb-6 overflow-hidden bg-[#050B18]">
+      {/* Abstract Financial Geometry Background */}
+      <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1F3BB3]/20 via-[#050B18] to-transparent opacity-70 blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#22D3EE]/15 via-[#050B18] to-transparent opacity-60 blur-[100px] pointer-events-none"></div>
+      
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)] pointer-events-none"></div>
+
+      {/* Abstract Particles */}
+      <motion.div 
+        animate={{ y: [0, -20, 0], opacity: [0.05, 0.1, 0.05] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[20%] left-[10%] w-2 h-2 rounded-full bg-[#22D3EE] shadow-[0_0_15px_#22D3EE]"
+      ></motion.div>
+      <motion.div 
+        animate={{ y: [0, 30, 0], opacity: [0.05, 0.1, 0.05] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-[30%] right-[20%] w-3 h-3 rounded-full bg-[#FF6B00] shadow-[0_0_20px_#FF6B00]"
+      ></motion.div>
+      <motion.div 
+        animate={{ y: [0, -15, 0], opacity: [0.05, 0.1, 0.05] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute top-[40%] right-[10%] w-1.5 h-1.5 rounded-full bg-[#1F3BB3] shadow-[0_0_10px_#1F3BB3]"
+      ></motion.div>
+
+      <div className="container relative z-10 mx-auto px-4 lg:px-8 max-w-[1280px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           <div className="flex flex-col items-start text-left">
-            <motion.div variants={fadeIn} className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass mb-8 border-primary/30">
-              <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+            <motion.div variants={fadeIn} className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass mb-8 border-[#1F3BB3]/30">
+              <span className="flex h-2 w-2 rounded-full bg-[#22D3EE] animate-pulse"></span>
               <span className="text-sm font-semibold tracking-wide text-white uppercase">The Future of Wealth Management</span>
             </motion.div>
 
-            <motion.h1 
-              variants={fadeIn} 
-              className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold text-white mb-8 tracking-tight leading-[1.1]"
-            >
-              Trade, Invest, <br />& Grow with <br />
-              <span className="bg-gradient-to-r from-[#14E6C9] to-[#3DD9FF] bg-clip-text text-transparent">Maitra.</span>
-            </motion.h1>
+            <motion.div variants={fadeIn} style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                lineHeight: 0.95,
+                fontSize: "clamp(52px,6vw,70px)"
+              }} className="text-white mb-4 tracking-tighter whitespace-nowrap">
+              <div style={{ color: "#F8FAFC" }}>Trading Simplified in</div>
+              <div className="h-[1.1em] relative overflow-hidden w-full" style={{ color: words[wordIndex].color }}>
+                <AnimatePresence mode="popLayout">
+                  <motion.div
+                    key={wordIndex}
+                    initial={{ y: 60, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -60, opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "anticipate" }}
+                    className="absolute inset-0 whitespace-nowrap text-ellipsis"
+                  >
+                    {words[wordIndex].text}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
             
             <motion.p 
               variants={fadeIn} 
-              className="text-lg text-[#B8C2D0] font-light mb-12 max-w-[550px] leading-relaxed"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "18px",
+                fontWeight: 400,
+                color: "rgba(255,255,255,0.72)"
+              }}
+              className="mb-8 max-w-[560px] leading-relaxed"
             >
-              Experience an institutional-grade platform designed for retail investors. Fast, secure, and built for your financial success.
+              Invest confidently with institutional-grade technology, lightning-fast execution, and seamless access to India's financial markets.
             </motion.p>
 
-            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-4 mb-12">
+            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-4 mb-8">
               <Link href="/open-account">
-                <Button size="lg" className="h-12 px-8 text-base font-bold bg-gradient-to-r from-[#14E6C9] to-[#0FD4B8] text-slate-900 shadow-[0_0_20px_rgba(20,230,201,0.3)] rounded-full flex items-center gap-3 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(20,230,201,0.5)] transition-all duration-250">
-                  Open Demat Account <ArrowRight className="w-4 h-4" />
+                <Button size="lg" className="h-13 rounded-full shadow-[0_4px_12px_rgba(255,107,0,0.2)] bg-gradient-to-r from-[#FF6B00] to-[#ff8c33] text-white hover:-translate-y-1 transition-all duration-200">
+                  Open Demat Account <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/stocks">
-                <Button size="lg" variant="outline" className="h-12 px-8 text-base font-medium border border-white/10 text-white bg-white/5 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] rounded-full flex items-center gap-3 hover:scale-[1.03] transition-all duration-250 backdrop-blur-md">
-                  <LineChart className="w-4 h-4" /> Explore Markets
+                <Button size="lg" variant="outline" className="h-13 rounded-full border border-white/20 text-[#F8FAFC] bg-white/5 hover:bg-white/10 hover:border-white/40 shadow-none hover:-translate-y-1 transition-all duration-200 backdrop-blur-md">
+                  <LineChart className="w-5 h-5" /> Explore Markets
                 </Button>
               </Link>
-              <div className="hidden sm:flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/10 cursor-pointer transition-all hover:scale-[1.03]">
-                  <Play className="w-5 h-5 ml-1" />
-                </div>
-                <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/10 cursor-pointer transition-all hover:scale-[1.03]">
-                  <Apple className="w-5 h-5" />
-                </div>
-              </div>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="w-full max-w-[550px] relative border border-white/10 bg-white/5 backdrop-blur-md rounded-full p-1.5 pl-5 flex items-center shadow-xl">
-              <Search className="h-4 w-4 text-slate-400 mr-2 shrink-0" />
+            <motion.div variants={fadeIn} className="w-full max-w-[550px] relative border border-white/10 bg-[#0F172A]/80 backdrop-blur-xl rounded-full p-2 pl-6 flex items-center shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+              <Search className="h-5 w-5 text-slate-400 mr-3 shrink-0" />
               <input 
-                placeholder="Search Reliance, TCS, HDFC..." 
-                className="w-full bg-transparent text-white placeholder:text-[#B8C2D0] focus:outline-none text-base"
+                placeholder="Search Stocks, IPOs, Mutual Funds..." 
+                className="w-full bg-transparent text-white placeholder:text-slate-500 focus:outline-none text-[13px] font-[500]"
               />
-              <Button className="rounded-full px-5 h-10 bg-gradient-to-r from-[#14E6C9] to-[#0FD4B8] text-slate-900 hover:scale-[1.03] transition-all duration-250 shrink-0 ml-2 shadow-[0_0_15px_rgba(20,230,201,0.2)] font-semibold text-sm">Search</Button>
+              <Button className="rounded-full px-6 h-12 bg-[#1F3BB3] text-white hover:bg-[#2546D4] transition-all duration-200 shrink-0 ml-2 shadow-[0_0_15px_rgba(31,59,179,0.3)] font-[600] text-[13px]">Search</Button>
+            </motion.div>
+
+            {/* Social Proof Row */}
+            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-3 mb-10 mt-6 text-[12px] md:text-[13px] font-[500] text-slate-300">
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-2.5 py-1 backdrop-blur-sm">
+                <Smartphone className="w-3 h-3 text-[#22D3EE]" /> 5K+ App Downloads
+              </div>
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <Award className="w-3 h-3 text-[#FF6B00]" /> Trusted Since 2004
+              </div>
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <ShieldCheck className="w-3 h-3 text-[#1F3BB3]" /> SEBI Registered
+              </div>
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                <Zap className="w-3 h-3 text-[#14E6C9]" /> Secure Digital Onboarding
+              </div>
             </motion.div>
           </div>
 
           {/* Right Column: Premium Phones Mockup */}
-          <motion.div variants={fadeIn} className="relative hidden lg:flex justify-center items-center h-[600px]">
+          <motion.div variants={fadeIn} className="relative hidden lg:flex justify-center items-center h-[520px] -mt-[120px]">
             {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#14E6C9]/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#1F3BB3]/20 blur-[100px] rounded-full pointer-events-none"></div>
             
             <motion.div 
               animate={{ y: [0, -15, 0] }}
@@ -155,82 +221,97 @@ export function MarketTicker() {
   );
 }
 
-export function TrustIndicators() {
+export function AppOnboardingSection() {
   return (
-    <AnimatedSection className="py-14 bg-background border-b border-white/5">
-      <div className="container mx-auto px-4 max-w-[1440px]">
-        <motion.div variants={fadeIn} className="flex flex-col items-center justify-center">
-          <p className="text-slate-500 uppercase tracking-widest text-sm font-semibold mb-10">Trusted by Regulatory Bodies & 100,000+ Investors</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Placeholders for logos */}
-            <div className="flex items-center gap-3"><Shield className="w-8 h-8 text-slate-400"/><span className="text-2xl font-bold text-slate-400">SEBI</span></div>
-            <div className="flex items-center gap-3"><Globe className="w-8 h-8 text-slate-400"/><span className="text-2xl font-bold text-slate-400">NSE</span></div>
-            <div className="flex items-center gap-3"><Award className="w-8 h-8 text-slate-400"/><span className="text-2xl font-bold text-slate-400">BSE</span></div>
-            <div className="flex items-center gap-3"><Zap className="w-8 h-8 text-slate-400"/><span className="text-2xl font-bold text-slate-400">MCX</span></div>
-            <div className="flex items-center gap-3"><Users className="w-8 h-8 text-slate-400"/><span className="text-2xl font-bold text-slate-400">CDSL</span></div>
-          </div>
-        </motion.div>
-      </div>
-    </AnimatedSection>
-  );
-}
-
-export function WhyMaitra() {
-  return (
-    <AnimatedSection className="py-24 bg-card relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1440px] relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+    <AnimatedSection className="pt-12 pb-16 bg-white relative overflow-hidden z-20">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1280px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          <motion.div variants={fadeIn}>
-            <span className="inline-block px-4 py-1.5 rounded-full glass text-primary text-sm font-bold tracking-widest uppercase mb-8">Quick & Easy Onboarding</span>
-            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-white leading-[1.1]">
-              Start building your wealth <span className="text-slate-500">today.</span>
+          {/* Left Content */}
+          <motion.div variants={fadeIn} className="lg:col-span-5">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-[#1F3BB3] text-[13px] font-[700] tracking-widest uppercase mb-8 border border-blue-100">
+              <Zap className="w-4 h-4 fill-current"/> Quick & Easy Onboarding
+            </span>
+            <h2 className="text-[40px] md:text-[52px] lg:text-[60px] font-[800] tracking-tight mb-6 text-[#050B18] leading-[1.1]">
+              Start building your<br/>wealth <span className="text-[#1F3BB3]">today.</span>
             </h2>
-            <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-lg">
-              Join thousands of investors who trust Maitra for their financial journey. Open your account in minutes with zero paperwork.
+            <p className="text-[18px] font-[400] text-[#64748B] leading-relaxed mb-12">
+              Open your Demat account in under 5 minutes with Maitra Wealth's secure, paperless onboarding experience.
             </p>
 
-            <div className="space-y-10">
-              <div className="flex gap-6 group">
-                <div className="shrink-0 mt-1">
-                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-primary/20 group-hover:border-primary/50 transition-all">
-                    <UserPlus className="w-7 h-7 text-white group-hover:text-primary transition-colors" />
+            <div className="flex gap-4 mb-6">
+              <Link href="/open-account">
+                <Button size="lg" className="bg-[#FF6B00] text-white hover:bg-[#ff7a1f] h-14 px-8 rounded-full text-[16px] font-[600] shadow-[0_8px_20px_rgba(255,107,0,0.25)] hover:-translate-y-1 transition-all duration-200">
+                  Open Demat Account <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-8 mt-12 pt-12 border-t border-slate-100">
+              <div className="flex gap-4 flex-1">
+                <div className="shrink-0">
+                  <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center">
+                    <UserPlus className="w-6 h-6 text-[#1F3BB3]" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-1">5-Minute Account Opening</h3>
-                  <p className="text-slate-400 text-base">Fully digital KYC process. No physical documents required.</p>
+                  <h3 className="text-[17px] font-[700] text-[#050B18] mb-1">5-Minute Digital KYC</h3>
+                  <p className="text-[14px] font-[400] text-[#64748B] leading-relaxed">Complete your account opening in just a few minutes.</p>
                 </div>
               </div>
-              
-              <div className="flex gap-6 group">
-                <div className="shrink-0 mt-1">
-                  <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center shadow-lg group-hover:bg-primary/20 group-hover:border-primary/50 transition-all">
-                    <ShieldCheck className="w-6 h-6 text-white group-hover:text-primary transition-colors" />
+              <div className="flex gap-4 flex-1">
+                <div className="shrink-0">
+                  <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center">
+                    <ShieldCheck className="w-6 h-6 text-[#1F3BB3]" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-1">Bank-Grade Security</h3>
-                  <p className="text-slate-400 text-base">Your funds and personal data are protected with enterprise-level encryption.</p>
+                  <h3 className="text-[17px] font-[700] text-[#050B18] mb-1">Bank-Grade Security</h3>
+                  <p className="text-[14px] font-[400] text-[#64748B] leading-relaxed">Your data and investments are protected with enterprise-level security.</p>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          <motion.div variants={fadeIn} className="relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-sm aspect-[3/4] glass-card rounded-[2rem] p-6 flex flex-col items-center justify-center text-center overflow-hidden">
-               {/* Decorative elements */}
-               <div className="absolute -top-32 -right-32 w-64 h-64 bg-primary/30 rounded-full blur-[80px]"></div>
-               <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px]"></div>
+          {/* Center Phone */}
+          <motion.div variants={fadeIn} className="lg:col-span-4 flex justify-center relative min-h-[500px]">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#1F3BB3]/5 rounded-full blur-[80px] pointer-events-none"></div>
+            <motion.div 
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute z-10 scale-[0.85] lg:scale-[0.95] transform rotate-[6deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.15)] origin-center"
+            >
+              <PhoneMockup />
+            </motion.div>
+          </motion.div>
 
-               <div className="w-40 h-40 bg-white rounded-3xl p-3 shadow-2xl mb-10 relative z-10 transform rotate-[-5deg] hover:rotate-0 transition-transform duration-500">
-                  <div className="w-full h-full border-4 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-slate-50">
-                    <QrCode className="w-16 h-16 text-slate-800" />
-                  </div>
+          {/* Right Download Buttons */}
+          <motion.div variants={fadeIn} className="lg:col-span-3 flex flex-col justify-center gap-6 pl-0 lg:pl-10 relative z-20">
+             <a href="#" className="group flex items-center gap-4 p-4 rounded-[20px] border border-slate-200 bg-white hover:border-[#1F3BB3]/30 hover:shadow-[0_20px_40px_rgba(31,59,179,0.08)] transition-all duration-200 hover:-translate-y-1">
+               <div className="w-12 h-12 flex items-center justify-center">
+                 {/* Google Play SVG Icon */}
+                 <svg viewBox="0 0 1024 1024" className="w-9 h-9">
+                    <path d="M110.8 111.4c-6.8 7.3-10.8 17.5-10.8 30.2v740.8c0 12.7 4 22.9 10.8 30.2l12 11.2 396.4-396.4v-30.8L122.8 100.2l-12 11.2z" fill="#00e676"/>
+                    <path d="M685.2 640.8l-166-166v-30.8l166-166 52.8 30 198.8 113.2c56.4 32.4 56.4 85.2 0 117.6L738 610.8l-52.8 30z" fill="#ffc107"/>
+                    <path d="M685.2 640.8l-166-166-408.4 408.4c17.6 18.4 46.4 20.4 81.2 0l493.2-242.4z" fill="#ff3d00"/>
+                    <path d="M685.2 383.2L192 140.8c-34.8-20.4-63.6-18.4-81.2 0L519.2 549.2l166-166z" fill="#29b6f6"/>
+                 </svg>
                </div>
-               <h3 className="text-3xl font-bold text-white mb-4 relative z-10">Scan to Download</h3>
-               <p className="text-slate-400 text-lg relative z-10">Get the Maitra app on iOS & Android instantly.</p>
-            </div>
+               <div>
+                 <div className="text-[11px] font-[600] text-slate-500 uppercase tracking-widest mb-0.5">Get it on</div>
+                 <div className="text-[19px] font-[800] text-[#050B18] leading-none tracking-tight">Google Play</div>
+               </div>
+             </a>
+             
+             <a href="#" className="group flex items-center gap-4 p-4 rounded-[20px] border border-slate-200 bg-white hover:border-[#1F3BB3]/30 hover:shadow-[0_20px_40px_rgba(31,59,179,0.08)] transition-all duration-200 hover:-translate-y-1">
+               <div className="w-12 h-12 flex items-center justify-center text-[#050B18]">
+                 <Apple className="w-10 h-10 fill-current" />
+               </div>
+               <div>
+                 <div className="text-[11px] font-[600] text-slate-500 uppercase tracking-widest mb-0.5">Download on the</div>
+                 <div className="text-[19px] font-[800] text-[#050B18] leading-none tracking-tight">App Store</div>
+               </div>
+             </a>
           </motion.div>
 
         </div>
@@ -242,9 +323,10 @@ export function WhyMaitra() {
 export function PlatformShowcase() {
   return (
     <AnimatedSection className="relative w-full pt-20 pb-24 flex flex-col items-center overflow-hidden">
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet" />
       {/* Split Background */}
       <div className="absolute inset-0 z-0 flex flex-col">
-        <div className="h-[60%] bg-[#14E6C9]"></div>
+        <div className="h-[60%] bg-[#FF6B00]"></div>
         <div className="h-[40%] bg-[#050B18]"></div>
       </div>
       
@@ -252,7 +334,7 @@ export function PlatformShowcase() {
       <div className="absolute top-0 left-0 w-full h-[60%] bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem] z-0"></div>
 
       <motion.div variants={fadeIn} className="relative z-10 w-full text-center px-4 mb-14 max-w-[1440px]">
-        <h2 className="text-4xl md:text-6xl font-extrabold text-[#050B18] tracking-tight leading-[1.05]">All Assets, One Platform</h2>
+        <h2 className="text-[28px] md:text-[32px] lg:text-[40px] font-[700] text-white tracking-tight leading-[1.2]">All Assets, One Platform</h2>
       </motion.div>
       
       {/* Laptop Mockup Wrapper */}
@@ -308,7 +390,7 @@ export function PlatformShowcase() {
                {/* Left Sidebar */}
                <div className="w-64 bg-[#0F172A] rounded-lg border border-white/5 flex flex-col h-full overflow-hidden hidden sm:flex shrink-0">
                  <div className="flex p-2 gap-1 border-b border-white/5">
-                   <div className="flex-1 bg-[#14E6C9] text-[#050B18] text-center text-[10px] font-bold py-2 rounded-md uppercase tracking-wider">Market Watch</div>
+                   <div className="flex-1 bg-[#1F3BB3] text-white text-center text-[10px] font-bold py-2 rounded-md uppercase tracking-wider">Market Watch</div>
                    <div className="flex-1 bg-transparent text-slate-400 text-center text-[10px] font-bold py-2 rounded-md uppercase tracking-wider hover:bg-white/5 cursor-pointer transition-colors">Easy Screen</div>
                  </div>
                  <div className="p-2">
@@ -347,7 +429,7 @@ export function PlatformShowcase() {
                  <div className="flex justify-between items-start mb-6 shrink-0">
                    <div>
                      <div className="flex items-center gap-3 mb-2">
-                       <div className="w-8 h-8 rounded-full bg-[#14E6C9] flex items-center justify-center text-[#050B18] font-black text-sm">S</div>
+                       <div className="w-8 h-8 rounded-full bg-[#1F3BB3] flex items-center justify-center text-white font-black text-sm">S</div>
                        <h2 className="text-white font-extrabold text-xl md:text-2xl tracking-tight">State Bank Of India <span className="text-slate-500 text-sm ml-2 font-semibold">SBI</span></h2>
                      </div>
                      <div className="flex items-baseline gap-3">
@@ -361,10 +443,9 @@ export function PlatformShowcase() {
                    </div>
                  </div>
 
-                 {/* Tabs */}
                  <div className="flex gap-2 border-b border-white/10 pb-3 mb-6 shrink-0 overflow-x-auto scrollbar-hide">
                    {['Overview', 'Technicals', 'Option Chain', 'Futures', 'Financials', 'About'].map((tab, i) => (
-                     <div key={tab} className={`px-5 py-2 text-sm font-bold rounded-md whitespace-nowrap transition-colors ${i === 0 ? 'bg-[#14E6C9]/20 text-[#14E6C9]' : 'text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer'}`}>
+                     <div key={tab} className={`px-5 py-2 text-sm font-bold rounded-md whitespace-nowrap transition-colors ${i === 0 ? 'bg-[#1F3BB3]/20 text-[#22D3EE]' : 'text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer'}`}>
                        {tab}
                      </div>
                    ))}
@@ -374,17 +455,17 @@ export function PlatformShowcase() {
                  <div className="flex-1 flex gap-4 min-h-0">
                    {/* Chart Area */}
                    <div className="flex-[2] relative rounded-xl border border-white/5 overflow-hidden bg-[#050B18] min-h-0">
-                      <div className="absolute top-4 left-4 z-10 flex gap-2">
+                       <div className="absolute top-4 left-4 z-10 flex gap-2">
                          {['1D', '1W', '1M', '1Y', 'ALL'].map((tf, i) => (
-                           <div key={tf} className={`px-3 py-1 text-xs font-bold rounded-md cursor-pointer transition-colors ${i === 0 ? 'bg-[#14E6C9] text-[#050B18]' : 'text-slate-400 hover:bg-white/10'}`}>{tf}</div>
+                           <div key={tf} className={`px-3 py-1 text-xs font-bold rounded-md cursor-pointer transition-colors ${i === 0 ? 'bg-[#3B82F6] text-white' : 'text-slate-400 hover:bg-white/10'}`}>{tf}</div>
                          ))}
-                      </div>
+                       </div>
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={mockChartData} margin={{ top: 50, right: 0, left: 0, bottom: 0 }}>
                           <defs>
                             <linearGradient id="terminalGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.4} />
-                              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                              <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
+                              <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                             </linearGradient>
                           </defs>
                           <CartesianGrid strokeDasharray="4 4" stroke="rgba(255,255,255,0.03)" vertical={false} />
@@ -431,7 +512,7 @@ export function PlatformShowcase() {
                             <div className="flex flex-col items-end"><span className="text-slate-500">Today High</span><span className="text-white font-bold">833.40</span></div>
                          </div>
                          <div className="relative w-full h-1.5 bg-white/10 rounded-full mb-5">
-                            <div className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-[#14E6C9] rounded-full shadow-[0_0_8px_#14E6C9]" style={{left: '60%'}}></div>
+                            <div className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-[#22D3EE] rounded-full shadow-[0_0_8px_#22D3EE]" style={{left: '60%'}}></div>
                          </div>
                          
                          <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-[11px]">
@@ -454,7 +535,7 @@ export function PlatformShowcase() {
         </div>
         
         <div className="absolute bottom-[-24px] md:bottom-[-28px] z-30">
-           <Button className="bg-gradient-to-r from-[#14E6C9] to-[#0FD4B8] hover:to-[#14E6C9] text-[#050B18] shadow-[0_15px_40px_rgba(20,230,201,0.5)] hover:scale-105 px-8 md:px-12 h-12 md:h-14 rounded-full font-black text-base md:text-lg transition-all border-[4px] border-[#050B18]">
+           <Button className="bg-[#FF6B00] hover:bg-[#ff7a1f] text-white shadow-[0_15px_40px_rgba(255,107,0,0.5)] hover:scale-105 px-8 md:px-12 h-12 md:h-14 rounded-full font-[800] text-base md:text-lg transition-all border-[4px] border-[#050B18]">
              Login to Maitra <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
            </Button>
         </div>

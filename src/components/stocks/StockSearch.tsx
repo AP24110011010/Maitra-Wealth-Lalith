@@ -37,10 +37,15 @@ const StockSearch: React.FC = () => {
   const [results, setResults] = useState<Company[]>([]);
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>(getRecents());
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [, setLocation] = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Hydrate recents on client side
+  useEffect(() => {
+    setRecentSearches(getRecents());
+  }, []);
 
   const fuse = useMemo(
     () =>

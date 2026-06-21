@@ -1,31 +1,43 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-const WATCHLIST_KEY = 'maitra_watchlist';
+const WATCHLIST_KEY = "maitra_watchlist";
 
 export function useWatchlist() {
-  const [watchlist, setWatchlist] = useState<string[]>(() => {
+  // Initialise with an empty array – SSR safe
+  const [watchlist, setWatchlist] = useState<string[]>([]);
+
+  // Hydrate from localStorage on client side only
+  useEffect(() => {
     try {
       const raw = localStorage.getItem(WATCHLIST_KEY);
-      return raw ? JSON.parse(raw) : [];
+      if (raw) {
+        setWatchlist(JSON.parse(raw));
+      }
     } catch {
-      return [];
+      // Silently ignore parsing/storage errors
     }
-  });
+  }, []);
 
+  // Toggle a symbol in the watchlist and persist the change
   const toggle = useCallback((symbol: string) => {
     setWatchlist(prev => {
       const next = prev.includes(symbol)
         ? prev.filter(s => s !== symbol)
         : [symbol, ...prev];
-      localStorage.setItem(WATCHLIST_KEY, JSON.stringify(next));
+      try {
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify(next));
+      } catch {
+        // ignore storage failures
+      }
       return next;
     });
   }, []);
 
-  const isInWatchlist = useCallback(
-    (symbol: string) => watchlist.includes(symbol),
-    [watchlist],
-  );
+  // Check if symbol is in watchlist
+  const isInWatchlist = useCallback((symbol: string) => {
+    return watchlist.includes(symbol);
+  }, [watchlist]);
 
+  // Public API
   return { watchlist, toggle, isInWatchlist };
 }

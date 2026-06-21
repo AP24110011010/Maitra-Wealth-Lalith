@@ -50,16 +50,20 @@ const StocksPage: React.FC = () => {
       <MarketTicker />
 
       {/* Hero */}
-      <section className="explore-hero">
-        <div className="explore-hero-glow" />
-        <h1 className="explore-hero-title">
-          Explore <span className="text-gradient-accent">Markets</span>
-        </h1>
-        <p className="explore-hero-subtitle">
-          Discover, analyse, and track 50+ NSE-listed companies with real-time insights and charts.
-        </p>
-        <div className="explore-search-sticky">
-          <StockSearch />
+      <section className="explore-hero border-b border-white/5 relative overflow-visible bg-[#030712] pt-6 pb-8 h-auto min-h-fit">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,107,0,0.08)_0%,transparent_50%),linear-gradient(180deg,transparent_0%,#030712_100%)] pointer-events-none"></div>
+        
+        <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
+          <h1 className="text-3xl font-bold text-white mb-2 tracking-normal">
+            Explore Markets
+          </h1>
+          <p className="text-[15px] text-slate-400 mb-6 max-w-xl">
+            Track leading Indian stocks with real-time insights and market performance.
+          </p>
+          <div className="w-full max-w-2xl">
+            <StockSearch />
+          </div>
         </div>
       </section>
 
@@ -100,7 +104,7 @@ const StocksPage: React.FC = () => {
         {watchlistCompanies.length > 0 && (
           <section className="explore-section">
             <div className="explore-section-header">
-              <Bookmark className="w-5 h-5 text-[#14E6C9]" />
+              <Bookmark className="w-5 h-5 text-primary" />
               <h2>Your Watchlist</h2>
             </div>
             <div className="watchlist-grid">
@@ -155,7 +159,7 @@ const StocksPage: React.FC = () => {
         {/* Stocks Table */}
         <section className="explore-section">
           <div className="explore-section-header">
-            <BarChart3 className="w-5 h-5 text-[#14E6C9]" />
+            <BarChart3 className="w-5 h-5 text-primary" />
             <h2>All Stocks</h2>
           </div>
           <StocksTable />

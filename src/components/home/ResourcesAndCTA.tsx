@@ -3,108 +3,166 @@ import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { 
-  BookOpen, ChevronDown, Quote, Play, Apple 
+  ChevronDown, Quote, Play, Apple, ArrowRight, Plus, Minus
 } from "lucide-react";
 import { fadeIn } from "@/lib/animations";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 
-export function KnowledgeCentre() {
-  return (
-    <AnimatedSection className="py-20 bg-background relative border-t border-white/5">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1440px]">
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full glass text-primary text-sm font-bold tracking-widest uppercase mb-6">Learn</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Empower Your Trading</h2>
-          <p className="text-lg text-slate-400 font-light max-w-xl mx-auto">Download our free eBooks to master the markets and build lasting wealth.</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { title: "Trading as a Beginner", desc: "A comprehensive guide to kickstart your journey." },
-            { title: "Creating an Investment Plan", desc: "Strategies to build a robust, long-term portfolio." },
-            { title: "Trading in Crude Oil", desc: "Master the nuances of energy commodities." },
-            { title: "Options Trading", desc: "Demystifying derivatives, hedging, and leverage." }
-          ].map((book, i) => (
-            <motion.div variants={fadeIn} key={i} className="glass-card rounded-2xl p-6 hover:border-primary/50 hover:bg-white/5 hover:-translate-y-2 transition-all flex flex-col cursor-pointer group shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[40px] group-hover:bg-primary/20 transition-colors"></div>
-              <BookOpen className="w-10 h-10 text-primary mb-6 group-hover:scale-110 transition-transform origin-left relative z-10" />
-              <h3 className="text-xl font-bold text-white mb-3 relative z-10">{book.title}</h3>
-              <p className="text-slate-400 leading-relaxed text-sm mt-auto relative z-10">{book.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-}
 
 export function BlogsSection() {
+  const blogs = [
+    {
+      category: "Investing 101",
+      title: "Reasons for Coal Petcoke Price Increase",
+      excerpt: "Blog Reasons for Coal Petcoke Price Increase Coal story –...",
+      image: "/images/blog-coal.png",
+      link: "https://maitrawealth.com/reasons-for-coal-petcoke-price-increase/"
+    },
+    {
+      category: "Investing 101",
+      title: "Crude Oil Price To Touch 150 USD A Barrel",
+      excerpt: "Blog Crude Oil Price To Touch 150 USD A Barrel...",
+      image: "/images/blog-crude.png",
+      link: "https://maitrawealth.com/crude-oil-price-to-touch-150-usd-a-barrel/"
+    },
+    {
+      category: "Investing in Stocks",
+      title: "How To Avoid Capital Gains Tax",
+      excerpt: "Blog How To Avoid Capital Gains Tax The basic purpose...",
+      image: "/images/blog-capital.png",
+      link: "https://maitrawealth.com/how-to-avoid-capital-gains-tax/"
+    }
+  ];
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.style.display = 'none';
+    const parent = e.currentTarget.parentElement;
+    if (parent) {
+      parent.classList.add('fallback-bg');
+      parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-slate-600 font-semibold uppercase tracking-widest">' + parent.getAttribute('data-category') + '</div>';
+    }
+  };
+
   return (
-    <AnimatedSection className="py-20 bg-card relative border-t border-white/5">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1440px]">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-          <div>
-            <span className="inline-block px-4 py-1.5 rounded-full glass text-primary text-sm font-bold tracking-widest uppercase mb-6">Insights</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Market Research</h2>
-          </div>
-          <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-6 h-10 text-sm font-bold transition-colors">
-            View All Articles
-          </Button>
+    <AnimatedSection className="pt-10 pb-8 bg-[#050505] relative border-t border-white/5">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1100px]">
+        
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="text-[#FF6B00] text-sm font-semibold tracking-[0.2em] uppercase block mb-3">
+            INVEST SMARTER WITH MAITRA
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            Blog Section
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { tag: "Market Update", title: "Nifty hits new all-time high amidst global rally", date: "Oct 12, 2024" },
-            { tag: "Analysis", title: "Why IT stocks are outperforming the broader market", date: "Oct 10, 2024" },
-            { tag: "Commodities", title: "Gold prices surge as inflation fears loom", date: "Oct 08, 2024" }
-          ].map((blog, i) => (
-            <motion.div variants={fadeIn} key={i} className="group cursor-pointer">
-              <div className="w-full aspect-[16/10] bg-background rounded-xl border border-white/5 mb-6 overflow-hidden relative">
-                {/* Abstract Image Placeholder */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-900/20 mix-blend-overlay group-hover:scale-105 transition-transform duration-700"></div>
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:2rem_2rem]"></div>
-              </div>
-              <span className="text-primary text-xs font-bold tracking-wider uppercase mb-3 block">{blog.tag}</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors leading-tight">{blog.title}</h3>
-              <p className="text-slate-500 text-sm">{blog.date}</p>
+        {/* Blog Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {blogs.map((blog, i) => (
+            <motion.div variants={fadeIn} key={i} className="group h-full">
+              <a href={blog.link} target="_blank" rel="noopener noreferrer" className="block bg-[#131922] rounded-[20px] overflow-hidden hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.05)] h-full flex flex-col border border-white/5">
+                
+                {/* Image Container */}
+                <div className="w-full aspect-[4/3] overflow-hidden bg-[#E2E8F0] relative flex items-center justify-center" data-category={blog.category}>
+                  <img 
+                    src={blog.image} 
+                    alt={blog.title} 
+                    className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" 
+                    loading="lazy"
+                    onError={handleImageError}
+                  />
+                </div>
+
+                {/* Content Container */}
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex items-center text-slate-300 text-[13px] font-medium mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 opacity-70"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                    {blog.category}
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-white mb-2 leading-snug group-hover:text-white/80 transition-colors line-clamp-2">
+                    {blog.title}
+                  </h3>
+                  
+                  <p className="text-slate-300/80 text-sm leading-relaxed mb-6 line-clamp-2 flex-grow">
+                    {blog.excerpt}
+                  </p>
+                  
+                  <div className="text-sm font-bold text-white group-hover:text-slate-200 transition-colors mt-auto flex items-center">
+                    Read More
+                  </div>
+                </div>
+                
+              </a>
             </motion.div>
           ))}
         </div>
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .fallback-bg { background: linear-gradient(135deg, #1A202C 0%, #0F172A 100%); }
+      `}} />
     </AnimatedSection>
   );
 }
 
 export function TestimonialsSection() {
+  const testimonials = [
+    {
+      text: "Maitra Commodities has an easy to use platform and mobile app. Also I congratulate excellent dealing desk service to keep market updates.",
+      name: "SYED MOHAMED ABDUL SHUKOOR",
+      city: "Trichy"
+    },
+    {
+      text: "I always recommend Maitra to trade because they take care of my positions and they resolve my queries whenever I am in trouble. Well done!",
+      name: "RAJENDRA VIBHUTE",
+      city: "Udaipur"
+    },
+    {
+      text: "Extremely good relationship with Maitra’s marketing team and their recommendations also good to reach success in commodity trading.",
+      name: "MUKTHAR",
+      city: "Bangalore"
+    }
+  ];
+
   return (
-    <AnimatedSection className="py-24 bg-background relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
-      
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1440px] relative z-10">
+    <AnimatedSection className="pt-6 pb-12 bg-[#050505] relative">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1280px]">
+        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Hear from our Traders</h2>
-          <p className="text-lg text-slate-400 font-light max-w-2xl mx-auto">Thousands of investors trust Maitra for their financial journey.</p>
+          <span className="text-[#3B82F6] text-sm font-semibold tracking-wide block mb-4">
+            Trusted by Thousands Across India
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+            Testimonials
+          </h2>
+          <p className="text-lg text-[#A1A8B8] font-light max-w-2xl mx-auto">
+            Hear from real traders and investors who use Maitra daily.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { text: "Maitra Commodities has an easy to use platform and mobile app. Also I congratulate excellent dealing desk service to keep market updates.", author: "Rahul M." },
-            { text: "I always recommend Maitra to trade because they take care of my positions and they resolve my queries whenever I am in trouble. Well done!!", author: "Priya S." },
-            { text: "Extremely good relationship with Maitra’s marketing team and then their recommendations also good to reach success in commodity trading.", author: "Vikram K." }
-          ].map((t, i) => (
-            <motion.div variants={fadeIn} key={i} className="glass-card rounded-[2rem] p-8 relative group hover:-translate-y-2 transition-all">
-              <Quote className="w-10 h-10 text-primary/20 absolute top-8 right-8 group-hover:text-primary/40 transition-colors" />
-              <div className="flex gap-1 mb-6">
-                {[1,2,3,4,5].map(star => <span key={star} className="text-yellow-500 text-xl">★</span>)}
-              </div>
-              <p className="text-lg text-white mb-8 leading-relaxed font-light">"{t.text}"</p>
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">{t.author.charAt(0)}</div>
-                <div>
-                  <h4 className="text-white font-bold">{t.author}</h4>
-                  <p className="text-slate-500 text-sm">Verified Investor</p>
-                </div>
-              </div>
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
+            <motion.div 
+              variants={fadeIn} 
+              key={i} 
+              className="bg-[#131922] border border-white/5 rounded-2xl p-10 relative flex flex-col items-center text-center hover:-translate-y-1 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.05)]"
+            >
+              <Quote className="w-16 h-16 text-white/5 absolute top-6 left-6" strokeWidth={1} />
+              
+              <p className="text-[15px] text-[#A1A8B8] leading-relaxed mb-10 mt-6 z-10 flex-grow font-light">
+                “{t.text}”
+              </p>
+              
+              <div className="w-8 h-[2px] bg-[#3B82F6] mb-6"></div>
+              
+              <h4 className="text-white font-bold text-sm tracking-wide uppercase">
+                {t.name}
+              </h4>
+              <p className="text-slate-500 text-xs mt-1">
+                {t.city}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -115,30 +173,52 @@ export function TestimonialsSection() {
 
 export function FAQSection() {
   const faqs = [
-    { q: "How do I open a Demat account with Maitra?", a: "You can open an account in under 5 minutes through our 100% paperless KYC process. Just download the app or click 'Open Account' on our website and keep your PAN and Aadhaar ready." },
-    { q: "What are the brokerage charges?", a: "We offer highly competitive and transparent pricing. Equity delivery is free, while intraday and F&O trades are charged at a flat ₹20 per executed order." },
-    { q: "Are direct mutual funds completely free?", a: "Yes, investing in direct mutual funds through Maitra involves zero commissions and zero AMC charges." },
-    { q: "Is my data and money secure?", a: "Absolutely. We are a SEBI registered broker. We use bank-grade encryption for all transactions and strictly adhere to all regulatory compliance to ensure your assets are safe." }
+    { q: "What services does Maitra Wealth offer?", a: "Maitra Wealth offers a comprehensive suite of financial services including Equity trading, Derivatives (Futures & Options), Commodities, Currency trading, Mutual Funds, and IPO investments." },
+    { q: "How do I open a Demat account with Maitra Wealth?", a: "You can open a Demat account in under 5 minutes through our 100% paperless KYC process. Just click 'Open Account' on our website and keep your PAN card, Aadhaar card, and bank details ready." },
+    { q: "What are the charges for trading with Maitra Wealth?", a: "We offer highly competitive and transparent pricing. Equity delivery is free, while intraday and F&O trades are charged at a flat ₹20 per executed order. Direct mutual funds have zero commission." },
+    { q: "How secure is my account with Maitra Wealth?", a: "Absolutely secure. Maitra Wealth is a SEBI registered broker and member of NSE, BSE, and MCX. We use bank-grade encryption for all transactions to ensure your data and assets are strictly protected." },
+    { q: "What asset classes can I trade with Maitra Wealth?", a: "You can trade across multiple asset classes including Equities (Stocks), Derivatives (F&O), Commodities, Currencies, and Mutual Funds all from a single integrated platform." },
+    { q: "Does Maitra Wealth offer customer support?", a: "Yes, we provide dedicated customer support through multiple channels including phone, email, and live chat. Our expert dealing desk is also available during market hours to assist with your trades." },
+    { q: "Is there a minimum balance required for my trading account?", a: "No, there is no minimum balance required to open or maintain a trading and Demat account with Maitra Wealth. You can fund your account as needed when you decide to trade." },
+    { q: "Can I trade using my mobile phone?", a: "Yes! The Maitra Wealth mobile app is available for both Android and iOS devices. It offers real-time charts, fast order execution, and portfolio tracking on the go." },
+    { q: "How can I fund my trading account?", a: "You can easily fund your trading account instantly using UPI, Net Banking, or RTGS/NEFT/IMPS transfers directly from your registered bank account." },
+    { q: "Does Maitra Wealth provide research and trading insights?", a: "Yes, we provide daily market insights, technical analysis, trading calls, and fundamental research reports to help our clients make informed investment decisions." }
   ];
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <AnimatedSection className="py-20 bg-card relative border-t border-white/5">
-      <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
+    <AnimatedSection className="pt-6 pb-8 bg-[#050505] relative">
+      <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-6">Frequently Asked Questions</h2>
+          <span className="text-[#3B82F6] text-sm font-semibold tracking-wide block mb-4 uppercase">
+            FAQs
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-6">
+            Frequently Asked Questions
+          </h2>
         </div>
 
         <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <motion.div variants={fadeIn} key={i} className="glass-card rounded-2xl overflow-hidden">
+            <motion.div 
+              variants={fadeIn} 
+              key={i} 
+              className={`border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 ${
+                openIndex === i ? 'bg-[#131922] shadow-[0_8px_30px_rgba(255,255,255,0.02)]' : 'bg-transparent hover:bg-[#131922]/50'
+              }`}
+            >
               <button 
-                className="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none"
+                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                aria-expanded={openIndex === i}
               >
-                <span className="text-lg font-bold text-white">{faq.q}</span>
-                <ChevronDown className={`w-6 h-6 text-primary transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`} />
+                <span className={`text-[17px] font-semibold pr-4 transition-colors duration-300 ${openIndex === i ? 'text-white' : 'text-slate-200'}`}>
+                  {faq.q}
+                </span>
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openIndex === i ? 'bg-[#3B82F6]/10 text-[#3B82F6]' : 'bg-white/5 text-slate-400'}`}>
+                  {openIndex === i ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                </div>
               </button>
               <AnimatePresence>
                 {openIndex === i && (
@@ -146,9 +226,10 @@ export function FAQSection() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-4 text-slate-400 text-base leading-relaxed border-t border-white/5 pt-4">
+                    <div className="px-6 pb-6 text-slate-400 text-[15px] leading-relaxed">
                       {faq.a}
                     </div>
                   </motion.div>
@@ -162,45 +243,3 @@ export function FAQSection() {
   );
 }
 
-export function FinalCTA() {
-  return (
-    <AnimatedSection className="py-28 bg-background relative overflow-hidden border-t border-white/5">
-      {/* Premium Geometric Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] pointer-events-none"></div>
-      
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1440px] text-center relative z-10">
-        <motion.div variants={fadeIn} className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tighter leading-[1.05]">
-            Ready to <span className="text-gradient-primary">upgrade</span> <br/>your trading?
-          </h2>
-          <p className="text-xl text-slate-400 font-light mb-12">Join the fastest growing premium investment platform today.</p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
-            <div className="h-16 w-48 glass-card rounded-xl flex items-center justify-center gap-4 cursor-pointer hover:bg-white/10 hover:border-primary/50 transition-all hover:-translate-y-1">
-              <Play className="w-8 h-8 text-white" />
-              <div className="text-left">
-                <p className="text-[10px] text-slate-400 uppercase leading-none mb-1">Get it on</p>
-                <p className="text-white font-bold text-lg leading-tight">Google Play</p>
-              </div>
-            </div>
-            
-            <div className="h-16 w-48 glass-card rounded-xl flex items-center justify-center gap-4 cursor-pointer hover:bg-white/10 hover:border-primary/50 transition-all hover:-translate-y-1">
-              <Apple className="w-8 h-8 text-white" />
-              <div className="text-left">
-                <p className="text-[10px] text-slate-400 uppercase leading-none mb-1">Download on the</p>
-                <p className="text-white font-bold text-lg leading-tight">App Store</p>
-              </div>
-            </div>
-          </div>
-          
-          <Link href="/open-account">
-            <Button size="lg" className="h-16 px-12 text-xl font-bold bg-primary text-white hover:bg-primary/90 rounded-full shadow-[0_20px_50px_rgba(0,208,156,0.3)] hover:scale-105 transition-all">
-              Open Demat Account
-            </Button>
-          </Link>
-        </motion.div>
-      </div>
-    </AnimatedSection>
-  );
-}

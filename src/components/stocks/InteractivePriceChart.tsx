@@ -17,7 +17,7 @@ interface ChartProps {
   prevClose: number;
 }
 
-const TIMEFRAMES = ["1D", "1W", "1M", "3M", "6M", "1Y", "5Y", "MAX"];
+const TIMEFRAMES = ["1D", "1W", "1M", "6M", "1Y"];
 
 export function InteractivePriceChart({ symbol, isPositive, prevClose }: ChartProps) {
   const [timeframe, setTimeframe] = useState("1D");
@@ -52,15 +52,15 @@ export function InteractivePriceChart({ symbol, isPositive, prevClose }: ChartPr
   return (
     <div className="w-full">
       {/* Timeframe Selectors */}
-      <div className="flex justify-start md:justify-end gap-1 sm:gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex justify-start gap-2 sm:gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide w-full">
         {TIMEFRAMES.map(tf => (
           <button
             key={tf}
             onClick={() => setTimeframe(tf)}
-            className={`px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+            className={`px-4 sm:px-5 py-1.5 rounded-full text-[13px] sm:text-[14px] font-[600] transition-all duration-200 whitespace-nowrap border flex items-center justify-center h-[32px] sm:h-[36px] ${
               timeframe === tf 
-                ? 'bg-white/10 text-white shadow-inner' 
-                : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                ? 'bg-[#14E6C9] border-[#14E6C9] text-[#050B18] shadow-[0_0_15px_rgba(20,230,201,0.2)]' 
+                : 'bg-transparent border-white/10 text-slate-400 hover:border-white/30 hover:text-white'
             }`}
           >
             {tf}

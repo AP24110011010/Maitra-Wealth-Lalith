@@ -1,5 +1,5 @@
-import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, ComposedChart, Bar } from 'recharts';
+import React, { useEffect, useRef } from 'react';
+import { createChart, ColorType, CrosshairMode, IChartApi, ISeriesApi, CandlestickSeries } from 'lightweight-charts';
 
 interface ChartData {
   label: string;
@@ -8,6 +8,7 @@ interface ChartData {
   low: number;
   close: number;
   volume: number;
+  timestamp: number; // UNIX timestamp in seconds
 }
 
 interface CandlestickChartFallbackProps {
@@ -15,170 +16,128 @@ interface CandlestickChartFallbackProps {
   mode: 'line' | 'candles';
 }
 
-const CandlestickShape = (props: any) => {
-  const { x, y, width, height, open, close, high, low } = props;
-  const isGrowing = close >= open;
-  const color = isGrowing ? '#14E6C9' : '#EF4444';
-  
-  // yAxis scale maps high values to smaller y coordinates (top is 0)
-  // So the highest point (max price) has the lowest y coordinate.
-  // Wait, recharts payload has the raw values, we need to map them.
-  // Since we use ComposedChart and Bar dataKey="close", `y` is the y-coord of `close`.
-  // To draw correctly, we should use the axis scale from props if available.
-  // Actually, Recharts provides `yAxis` scale function inside props if we dig into it, but an easier way is:
-  // pass an array [low, high] to dataKey? No, for candlestick, the easiest is to use a Custom Shape on a BarChart where dataKey is `[open, close]`. 
-  // If dataKey={['open', 'close']}, then `y` is the upper coordinate and `height` is the absolute difference.
-  
-  // Let's assume dataKey={['open', 'close']}
-  // So y is min(y_open, y_close) and height is |y_open - y_close|.
-  // We still need to draw the wick. We need the y-coordinates for high and low.
-  // `yAxis.scale(val)` gives the y coordinate.
-  
-  // Let's get the scale:
-  const { yAxis, xAxis } = props;
-  if (!yAxis || !xAxis) return null;
-  
-  const yHigh = yAxis.scale(high);
-  const yLow = yAxis.scale(low);
-  const yOpen = yAxis.scale(open);
-  const yClose = yAxis.scale(close);
-  
-  const wickX = x + width / 2;
-  
-  // Handle edge case where open == close (flat body)
-  const bodyHeight = Math.max(Math.abs(yOpen - yClose), 1);
-  const bodyY = Math.min(yOpen, yClose);
-
-  return (
-    <g>
-      {/* Wick */}
-      <line x1={wickX} y1={yHigh} x2={wickX} y2={yLow} stroke={color} strokeWidth={1} />
-      {/* Body */}
-      <rect 
-        x={x} 
-        y={bodyY} 
-        width={width} 
-        height={bodyHeight} 
-        fill={color} 
-        stroke={color} 
-        strokeWidth={1} 
-      />
-    </g>
-  );
-};
-
-const CustomCandlestickTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    return (
-      <div className="bg-[#0F172A] border border-white/10 rounded-xl p-3 shadow-xl text-xs text-white">
-        <div className="text-slate-400 mb-2">{data.label}</div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-          <span className="text-slate-400">Open:</span>
-          <span className="font-medium">₹{data.open.toFixed(2)}</span>
-          <span className="text-slate-400">High:</span>
-          <span className="font-medium">₹{data.high.toFixed(2)}</span>
-          <span className="text-slate-400">Low:</span>
-          <span className="font-medium">₹{data.low.toFixed(2)}</span>
-          <span className="text-slate-400">Close:</span>
-          <span className="font-medium">₹{data.close.toFixed(2)}</span>
-          <span className="text-slate-400">Vol:</span>
-          <span className="font-medium">{data.volume >= 1000 ? (data.volume/1000).toFixed(1) + 'K' : data.volume}</span>
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
-
 const CandlestickChartFallback: React.FC<CandlestickChartFallbackProps> = ({ data, mode }) => {
-  if (!data || data.length === 0) return null;
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<IChartApi | null>(null);
+  const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
 
-  if (mode === 'line') {
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-          <defs>
-            <linearGradient id="priceGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#14E6C9" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#14E6C9" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis
-            dataKey="label"
-            tick={{ fill: '#64748B', fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            interval="preserveStartEnd"
-            minTickGap={30}
-          />
-          <YAxis
-            domain={['dataMin', 'dataMax']}
-            tick={{ fill: '#64748B', fontSize: 11 }}
-            axisLine={false}
-            tickLine={false}
-            width={60}
-            tickFormatter={(v) => `₹${v}`}
-            scale="linear"
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: '#0F172A',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '12px',
-              color: '#fff',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-            }}
-            labelStyle={{ color: '#94A3B8', marginBottom: 4 }}
-            formatter={(value: number) => [`₹${value.toFixed(2)}`, 'Price']}
-            isAnimationActive={false}
-          />
-          <Area
-            type="monotone"
-            dataKey="close"
-            stroke="#14E6C9"
-            strokeWidth={2.5}
-            fill="url(#priceGrad)"
-            animationDuration={800}
-            animationEasing="ease-in-out"
-            isAnimationActive={true}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    );
-  }
+  useEffect(() => {
+    if (!chartContainerRef.current) return;
 
-  // Candles mode
-  // We need to calculate domain for candles to include high and low
-  const dataMin = Math.min(...data.map((d) => d.low));
-  const dataMax = Math.max(...data.map((d) => d.high));
-  // Add some padding
-  const padding = (dataMax - dataMin) * 0.05;
+    const handleResize = () => {
+      if (chartRef.current && chartContainerRef.current) {
+        chartRef.current.applyOptions({ 
+          width: chartContainerRef.current.clientWidth 
+        });
+      }
+    };
+
+    // Extract and validate OHLC data, convert to lightweight-charts format
+    const validData = data
+      .filter(d => 
+        d.timestamp !== undefined && 
+        !isNaN(d.timestamp) &&
+        d.open !== undefined &&
+        d.high !== undefined &&
+        d.low !== undefined &&
+        d.close !== undefined
+      )
+      .map(d => {
+        // Enforce lightweight-charts strict OHLC rules
+        const open = d.open;
+        const close = d.close;
+        const maxPrice = Math.max(open, close);
+        const minPrice = Math.min(open, close);
+        
+        return {
+          time: d.timestamp as any,
+          open: open,
+          close: close,
+          high: Math.max(d.high, maxPrice),
+          low: Math.min(d.low, minPrice),
+        };
+      });
+
+    // Lightweight charts strictly requires ascending, unique time values.
+    const uniqueData = Array.from(new Map(validData.map(item => [item.time, item])).values());
+    uniqueData.sort((a, b) => a.time - b.time);
+
+    if (uniqueData.length === 0) return;
+
+    const chart = createChart(chartContainerRef.current, {
+      layout: {
+        background: { type: ColorType.Solid, color: 'transparent' },
+        textColor: '#64748B',
+        fontSize: 11,
+        fontFamily: 'Inter, sans-serif',
+      },
+      grid: {
+        vertLines: { color: 'rgba(255,255,255,0.03)' },
+        horzLines: { color: 'rgba(255,255,255,0.03)' },
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+        vertLine: {
+          width: 1,
+          color: 'rgba(255,255,255,0.2)',
+          style: 3, // dashed
+          labelBackgroundColor: '#0F172A',
+        },
+        horzLine: {
+          width: 1,
+          color: 'rgba(255,255,255,0.2)',
+          style: 3,
+          labelBackgroundColor: '#0F172A',
+        },
+      },
+      rightPriceScale: {
+        borderColor: 'rgba(255,255,255,0.1)',
+        autoScale: true,
+      },
+      timeScale: {
+        borderColor: 'rgba(255,255,255,0.1)',
+        timeVisible: true,
+        secondsVisible: false,
+      },
+      width: chartContainerRef.current.clientWidth,
+      height: chartContainerRef.current.clientHeight,
+    });
+
+    chartRef.current = chart;
+
+    const candlestickSeries = chart.addSeries(CandlestickSeries, {
+      upColor: '#14E6C9',
+      downColor: '#EF4444',
+      borderVisible: false,
+      wickUpColor: '#14E6C9',
+      wickDownColor: '#EF4444',
+    });
+
+    seriesRef.current = candlestickSeries;
+
+    try {
+       console.log("Setting Candlestick Data:", uniqueData.slice(0, 5));
+       candlestickSeries.setData(uniqueData);
+       chart.timeScale().fitContent();
+    } catch(e) {
+       console.error("Lightweight charts error setting data:", e, uniqueData);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
+      }
+    };
+  }, [data]);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-        <XAxis
-          dataKey="label"
-          tick={{ fill: '#64748B', fontSize: 11 }}
-          axisLine={false}
-          tickLine={false}
-          interval="preserveStartEnd"
-          minTickGap={30}
-        />
-        <YAxis
-          domain={[dataMin - padding, dataMax + padding]}
-          tick={{ fill: '#64748B', fontSize: 11 }}
-          axisLine={false}
-          tickLine={false}
-          width={60}
-          tickFormatter={(v) => `₹${v.toFixed(0)}`}
-        />
-        <Tooltip content={<CustomCandlestickTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1, strokeDasharray: '4 4' }} />
-        {/* dataKey takes [open, close] so that YAxis scales properly and Bar gets the right body height automatically. The custom shape draws the rest. */}
-        <Bar dataKey={(d) => [d.open, d.close]} shape={<CandlestickShape />} isAnimationActive={true} animationDuration={800} />
-      </ComposedChart>
-    </ResponsiveContainer>
+    <div className="w-full h-full relative">
+      <div ref={chartContainerRef} className="w-full h-full" />
+    </div>
   );
 };
 
